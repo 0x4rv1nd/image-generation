@@ -31,6 +31,10 @@ def wrap_text(text, font, max_width):
     lines.append(current)
     return lines
 
+@app.route("/", methods=["GET"])
+def home():
+    return "Quote Image Generator is Live!"
+
 @app.route("/generate_quote_image", methods=["POST"])
 def generate_quote_image():
     data = request.get_json()
