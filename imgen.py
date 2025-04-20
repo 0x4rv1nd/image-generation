@@ -1,5 +1,5 @@
 from flask import Flask, request, send_file
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageDraw, ImageFont, PngImagePlugin
 import io
 
 app = Flask(__name__)
@@ -39,7 +39,6 @@ def generate_quote_image():
     if not quote:
         return {"error": "No quote provided"}, 400
 
-    # Load template image
     try:
         image = Image.open(BACKGROUND_IMAGE).convert("RGB")
         image = image.resize((IMAGE_WIDTH, IMAGE_HEIGHT))
@@ -71,8 +70,12 @@ def generate_quote_image():
             draw.text((x, y), ln, font=font, fill="white")
         y += h + LINE_SPACING
 
+    # Add metadata (caption)
+    meta = PngImagePlugin.PngInfo()
+    meta.add_text("Caption", quote)
+
     buf = io.BytesIO()
-    image.save(buf, format="PNG")
+    image.save(buf, format="PNG", pnginfo=meta)
     buf.seek(0)
     return send_file(buf, mimetype="image/png")
 
