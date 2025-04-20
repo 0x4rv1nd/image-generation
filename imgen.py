@@ -104,7 +104,7 @@ def generate_quote_image():
     image.save(filepath, format="PNG", pnginfo=meta)
 
     # Replace with your actual Render domain:
-    public_url = f"https://your-render-app.onrender.com/static/{filename}"
+    public_url = f"https://image-generation-sbsi.onrender.com/static/{filename}"
     return jsonify({"image_url": public_url})
 
 if __name__ == "__main__":
